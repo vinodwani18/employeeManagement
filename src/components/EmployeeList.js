@@ -1,8 +1,10 @@
 import React from 'react';
 import '../css/EmployeeList.css';
 
-let EmployeeList = ({ employeeList }) => (
+let EmployeeList = ({ employeeList, handlePrevClick }) => (
+  
   employeeList ?
+  <>
   <div className='listTable'>
     <div className='listTableRow'>
       <div className='rowCell'>Customer ID </div>
@@ -13,6 +15,7 @@ let EmployeeList = ({ employeeList }) => (
       <div  className='rowCell'>Email </div>
       <div  className='rowCell'>Date of Birth </div>
     </div>
+    { console.log("in Employeelist") }
     {
       employeeList.map ((employee) => {
         return (
@@ -28,6 +31,8 @@ let EmployeeList = ({ employeeList }) => (
         })
     }
   </div>
+  <button onClick={() => handlePrevClick()}>Previous</button>
+  </>
     :
 null
 );

@@ -1,11 +1,18 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getEmployees } from '../actions';
-let Button=({getEmployees})=>(
-   <button onClick={getEmployees}>Press to see news</button>
-)
-const mapDispatchToProps = {
-     getEmployees: getEmployees,
-};
-Button = connect(null,mapDispatchToProps)(Button);
+
+function Button() {
+   const dispatch = useDispatch();
+   const params = useSelector((state) => state?.reducers?.queryParams);
+      console.log(params);
+   let noofRecords = parseInt(params?.noofRecords) + 10
+   let newParams= {
+      noofRecords:noofRecords,
+      idStarts:1001
+   }
+
+   return <button onClick={() => dispatch(getEmployees(newParams))}>Next</button>;
+}
+
 export default Button;

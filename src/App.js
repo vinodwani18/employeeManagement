@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect, useMemo, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EmployeeList from './components/EmployeeList';
 import Button from './components/Button';
@@ -11,26 +10,46 @@ import './App.css';
 function App() {
   const dispatch = useDispatch();
   const [num, setNum] = useState(0);
-  useEffect(() => {
-    // dispatch(setParams({noofRecords: 10, idStarts: 1001}));
-    dispatch(getEmployees({noofRecords: 10, idStarts: 1001}));
-  }, [dispatch]);
+  const [filteredList, setFilteredList] = useState([]);
   
+  // Initialize 'params' state with the default values
+  const [params, setParams] = useState({ noofRecords: 10, idStarts: 1001 });
+
+  useEffect(() => {
+    // Dispatch the initial action to fetch employees
+    dispatch(getEmployees(params));
+  }, [dispatch, params]); // Make sure to include 'params' in the dependencies
+
   const employeeList = useSelector((state) => state?.reducers?.employees);
-  let filteredList = employeeList && employeeList.slice(-10);
+  const qParams = useSelector((state) => state?.reducers?.queryParams);
+
+  useEffect(() => {
+    if (employeeList && qParams) {
+      setFilteredList(employeeList.slice(-10));
+      // Update the 'params' state with the latest 'qParams' from Redux
+      setParams(qParams);
+    }
+  }, [employeeList, qParams]);
   
   const handlePrevClick = useCallback(() => {
-    console.log("pre click");
-    filteredList = employeeList && employeeList.slice(10);
-  }, [ employeeList ]);
+    console.log(params); // You can see the 'params' state here
+    let newParams = {
+      noofRecords: params.noofRecords,
+      idStarts: parseInt(params.idStarts) - 10,
+    };
+    dispatch(getEmployees(newParams));
+  }, [dispatch, params]); // Include 'params' and 'employeeList' in the dependencies
 
-  const getEmployeeListComp = useMemo(() => <EmployeeList employeeList={filteredList} handlePrevClick={handlePrevClick}/>, [filteredList, handlePrevClick]);
+  const getEmployeeListComp = useMemo(() => (
+    <EmployeeList employeeList={filteredList} handlePrevClick={handlePrevClick} />
+  ), [filteredList, handlePrevClick]);
   const buttonComp = useMemo(() => <Button />, []);
+
   return (
     <div>
       <Header />
       <h1>{num}</h1>
-      <button onClick={() => setNum(num + 1)}> Addition </button>
+      <button onClick={() => setNum(num + 1)}>Addition</button>
       {buttonComp}
       <TestButton />
       {getEmployeeListComp}

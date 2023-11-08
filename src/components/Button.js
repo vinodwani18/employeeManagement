@@ -6,10 +6,10 @@ function Button() {
    const dispatch = useDispatch();
    const params = useSelector((state) => state?.reducers?.queryParams);
       console.log(params);
-   let noofRecords = parseInt(params?.noofRecords) + 10
+   // let noofRecords = parseInt(params?.noofRecords) + 10
    let newParams= {
-      noofRecords:noofRecords,
-      idStarts:1001
+      noofRecords:params?.noofRecords,
+      idStarts:parseInt(params?.idStarts) + 10
    }
 
    return <button onClick={() => dispatch(getEmployees(newParams))}>Next</button>;

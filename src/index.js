@@ -8,6 +8,10 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import ContactUs from "./components/ContactUs";
+import EmployeeList from './components/EmployeeList';
+import AboutUs from "./components/AboutUs";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -21,11 +25,39 @@ const enhancers = [applyMiddleware(...middleware)];
 const store = createStore(reducer,InitialState,composeEnhancers(...enhancers), )
 
 sagaMiddleware.run(rootSaga);
-root.render(
-  <Provider store={store}>
-    <App />
-  </Provider>
-);
+
+const AppLayout = () => {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+}
+
+const appRouter = createBrowserRouter([{
+  path: '/',
+  element: <AppLayout/>,
+  children: [
+    {
+      path: '/',
+      element: <EmployeeList />
+    },
+    {
+      path: '/aboutus',
+      element: <AboutUs />
+    },
+    {
+      path: '/contactus',
+      element: <ContactUs />
+    }
+  ],
+}]);
+
+
+
+root.render(<RouterProvider router={appRouter} />);
+
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

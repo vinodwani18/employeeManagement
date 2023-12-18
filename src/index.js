@@ -12,6 +12,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ContactUs from "./components/ContactUs";
 import EmployeeList from './components/EmployeeList';
 import AboutUs from "./components/AboutUs";
+import LocalEmployee from './components/LocalEmployee';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -41,6 +42,10 @@ const appRouter = createBrowserRouter([{
     {
       path: '/',
       element: <EmployeeList />
+    },
+    {
+      path: '/employee',
+      element: <LocalEmployee />
     },
     {
       path: '/aboutus',

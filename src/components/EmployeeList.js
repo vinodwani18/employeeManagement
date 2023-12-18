@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getEmployees } from '../actions';
-import '../css/EmployeeList.css';
 import { Link } from 'react-router-dom';
 
 function EmployeeList() {
